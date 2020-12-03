@@ -15,6 +15,7 @@
     "rules": {
       "linebreak-style": 0,
       "allowForLoopAfterthoughts": true,
+      "no-await-in-loop": 0,
       "indent": ["error", 4, {"SwitchCase": 1}],
       "import/prefer-default-export": "off",
       "import/no-extraneous-dependencies": ["warn", {
