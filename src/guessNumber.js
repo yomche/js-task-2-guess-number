@@ -1,42 +1,57 @@
-const io = require('console-read-write');
+const readline = require('readline');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});
 
 const randomNumber = {
-    generateRandomNumber: Math.round(Math.random() * 10 + 1),
+    generatedRandomNumber: Math.round(Math.random() * 10 + 1),
 };
 
-const guessNumber = {
-    guess(userNumber) {
+function GuessNumber() {
+    this.guess = function (userNumber) {
         switch (true) {
-            case userNumber > this.generateRandomNumber:
-                io.write('Your number is bigger than guessed. Try again');
+            case userNumber > this.generatedRandomNumber:
+                console.log('Your number is bigger than guessed. Try again');
                 break;
-            case userNumber < this.generateRandomNumber:
-                io.write('Your number is smaller than guessed. Try again');
+            case userNumber < this.generatedRandomNumber:
+                console.log('Your number is smaller than guessed. Try again');
                 break;
-            case userNumber == this.generateRandomNumber:
-                io.write('You guessed right! Congratz!');
+            case userNumber == this.generatedRandomNumber:
+                console.log('You guessed right! Congratz!');
                 return true;
             default:
-                io.write('This is not a number');
+                console.log('This is not a number');
                 break;
         }
-    },
+    };
+}
+
+GuessNumber.prototype = randomNumber;
+let guessNumber = new GuessNumber();
+
+const question = () => {
+    return new Promise((resolve, reject) =>
+        rl.question('Try to guess number. Input yours: ', (answer) =>
+            resolve(answer)
+        )
+    );
 };
 
-Object.setPrototypeOf(guessNumber, randomNumber);
-
-const guessGame = {
-    async main() {
-        io.write('Try to guess number. Input yours: ');
-        for (let attemptsCounter = 3; attemptsCounter > 0; --attemptsCounter) {
-            const number = await io.read();
-            if (guessNumber.guess(number)) return;
+const guessGame = async () => {
+    for (let attemptsCounter = 3; attemptsCounter > 0; --attemptsCounter) {
+        const number = await question();
+        if (guessNumber.guess(number)) {
+            rl.close();
+            return;
         }
-        io.write('');
-        io.write('');
-        io.write('Amount of attempts is ended');
-        io.write(`Guessed number is ${randomNumber.generateRandomNumber}`);
-    },
+    }
+    console.log('');
+    console.log('');
+    console.log('Amount of attempts is ended');
+    console.log(`Guessed number is ${randomNumber.generatedRandomNumber}`);
+    rl.close();
 };
 
-guessGame.main();
+guessGame();
