@@ -32,14 +32,14 @@ GuessNumber.prototype = randomNumber;
 let guessNumber = new GuessNumber();
 
 const question = () => {
-    return new Promise((resolve, reject) =>
+    return new Promise(function (resolve, reject) {
         rl.question('Try to guess number. Input yours: ', (answer) =>
             resolve(answer)
-        )
-    );
+        );
+    });
 };
 
-const guessGame = async () => {
+async function guessGame () {
     for (let attemptsCounter = 3; attemptsCounter > 0; --attemptsCounter) {
         const number = await question();
         if (guessNumber.guess(number)) {
@@ -47,7 +47,6 @@ const guessGame = async () => {
             return;
         }
     }
-    console.log('');
     console.log('');
     console.log('Amount of attempts is ended');
     console.log(`Guessed number is ${randomNumber.generatedRandomNumber}`);
