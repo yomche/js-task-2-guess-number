@@ -6,24 +6,20 @@ const rl = readline.createInterface({
 });
 
 const randomNumber = {
-    generatedRandomNumber: Math.round(Math.random() * 10 + 1),
+    generatedRandomNumber: Math.round(Math.random() * 10),
 };
 
 function GuessNumber() {
     this.guess = function (userNumber) {
-        switch (true) {
-            case userNumber > this.generatedRandomNumber:
-                console.log('Your number is bigger than guessed. Try again');
-                break;
-            case userNumber < this.generatedRandomNumber:
-                console.log('Your number is smaller than guessed. Try again');
-                break;
-            case userNumber == this.generatedRandomNumber:
-                console.log('You guessed right! Congratz!');
-                return true;
-            default:
-                console.log('This is not a number');
-                break;
+        if (userNumber > this.generatedRandomNumber) {
+            console.log('Your number is bigger than guessed. Try again');
+        } else if (userNumber < this.generatedRandomNumber) {
+            console.log('Your number is smaller than guessed. Try again');
+        } else if (userNumber == this.generatedRandomNumber) {
+            console.log('You guessed right! Congratz!');
+            return true;
+        } else {
+            console.log('This is not a number');
         }
     };
 }
@@ -32,11 +28,8 @@ GuessNumber.prototype = randomNumber;
 let guessNumber = new GuessNumber();
 
 function question() {
-    // определение промиса
-    let promise = new Promise(function (resolve, reject) {
-        // метод модуля readline
+    let promise = new Promise(function (resolve) {
         rl.question('Try to guess number. Input yours: ', function (answer) {
-            // состояние "resolved" - вызов функции resolve с переменной answer - результат успешного выполнения
             resolve(answer);
         });
     });
