@@ -31,15 +31,19 @@ function GuessNumber() {
 GuessNumber.prototype = randomNumber;
 let guessNumber = new GuessNumber();
 
-const question = () => {
-    return new Promise(function (resolve, reject) {
-        rl.question('Try to guess number. Input yours: ', (answer) =>
-            resolve(answer)
-        );
+function question() {
+    // определение промиса
+    let promise = new Promise(function (resolve, reject) {
+        // метод модуля readline
+        rl.question('Try to guess number. Input yours: ', function (answer) {
+            // состояние "resolved" - вызов функции resolve с переменной answer - результат успешного выполнения
+            resolve(answer);
+        });
     });
-};
+    return promise;
+}
 
-async function guessGame () {
+async function guessGame() {
     for (let attemptsCounter = 3; attemptsCounter > 0; --attemptsCounter) {
         const number = await question();
         if (guessNumber.guess(number)) {
@@ -51,6 +55,6 @@ async function guessGame () {
     console.log('Amount of attempts is ended');
     console.log(`Guessed number is ${randomNumber.generatedRandomNumber}`);
     rl.close();
-};
+}
 
 guessGame();
