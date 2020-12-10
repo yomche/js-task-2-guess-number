@@ -5,49 +5,64 @@ const rl = readline.createInterface({
     output: process.stdout,
 });
 
-const randomNumber = {
-    generatedRandomNumber: Math.round(Math.random() * 10),
-};
+function RandomNumber() {
+    this.number = Math.round(Math.random() * 10);
+    this.getRandomNumber = function () {
+        return this.number;
+    };
+}
 
-function GuessNumber() {
-    this.guess = function (userNumber) {
-        if (userNumber > this.generatedRandomNumber) {
+function GuessedNumber() {
+    this.input = async () => {
+        return new Promise((resolve) => {
+            rl.question('Input your number in the range from 0 to 10: ', (inputNumber) => {
+                resolve(inputNumber);
+            });
+        });
+    };
+}
+
+function CompareNumbers(randomNumber, guessedNumber) {
+    this.randomNumber = randomNumber;
+    this.guessedNumber = guessedNumber;
+    this.compare = async function () {
+        let generatedRandomNumber = this.randomNumber.getRandomNumber();
+        let userNumber = await this.guessedNumber.input();
+        
+        if (userNumber > generatedRandomNumber) {
             console.log('Your number is bigger than guessed. Try again');
-        } else if (userNumber < this.generatedRandomNumber) {
+        } else if (userNumber < generatedRandomNumber) {
             console.log('Your number is smaller than guessed. Try again');
-        } else if (userNumber == this.generatedRandomNumber) {
-            console.log('You guessed right! Congratz!');
+        } else if (userNumber == generatedRandomNumber) {
             return true;
         } else {
             console.log('This is not a number');
         }
+        return false;
     };
 }
 
-GuessNumber.prototype = randomNumber;
-let guessNumber = new GuessNumber();
-
-function question() {
-    let promise = new Promise(function (resolve) {
-        rl.question('Try to guess number. Input yours: ', function (answer) {
-            resolve(answer);
-        });
-    });
-    return promise;
-}
-
-async function guessGame() {
-    for (let attemptsCounter = 3; attemptsCounter > 0; --attemptsCounter) {
-        const number = await question();
-        if (guessNumber.guess(number)) {
-            rl.close();
-            return;
+function GuessGame(compareNumbers) {
+    this.compareNumbers = compareNumbers;
+    this.play = async function () {
+        for (let i = 0; i < 3; ++i) {
+            if (await this.compareNumbers.compare()) {
+                console.log('You guessed right! Congrats');
+                rl.close();
+                return;
+            }
         }
-    }
-    console.log('');
-    console.log('Amount of attempts is ended');
-    console.log(`Guessed number is ${randomNumber.generatedRandomNumber}`);
-    rl.close();
+        console.log('');
+        console.log('Amount of attempts is ended');
+        console.log(`Guessed number is ${this.compareNumbers.randomNumber.getRandomNumber()}`);
+        rl.close();
+    };
 }
 
-guessGame();
+
+new GuessGame(
+    new CompareNumbers(
+        new RandomNumber(), 
+        new GuessedNumber()
+    )
+).play();
