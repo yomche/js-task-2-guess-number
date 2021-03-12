@@ -1,0 +1,32 @@
+{
+  "name": "js-task-2-guess-number",
+  "version": "1.0.0",
+  "description": "js task 2 for epam training center",
+  "main": "guessNumber.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier --write src",
+    "eslint": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yomche/js-task-2-guess-number.git"
+  },
+  "author": "Ekaterina Smirnova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yomche/js-task-2-guess-number/issues"
+  },
+  "homepage": "https://github.com/yomche/js-task-2-guess-number#readme",
+  "dependencies": {
+    "commander": "^6.2.0",
+    "console-read-write": "^0.1.1",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "inquirer": "^7.3.3",
+    "prettier": "^2.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.14.0",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}
